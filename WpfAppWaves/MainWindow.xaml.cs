@@ -32,7 +32,11 @@ namespace WpfAppWaves
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Item row = itemsGrid.SelectedItem as Item;
-			vm.SetSelectedItem(row);
+		
+			if (row != null) 
+			{
+                vm.SetSelectedItem(row);
+            }			
         }
     }
 }

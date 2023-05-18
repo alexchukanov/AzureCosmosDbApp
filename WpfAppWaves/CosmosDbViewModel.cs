@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Azure.Cosmos;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -23,6 +24,7 @@ namespace WpfAppWaves
             LoadCommand = new Command(OnLoad);
             UpdateCommand = new Command(OnUpdate);
             GridCommand = new Command(OnGrid);
+            ClearCommand = new Command(OnClear);
 
             Id = Guid.NewGuid().ToString();
             CategoryId = Guid.NewGuid().ToString();
@@ -31,8 +33,185 @@ namespace WpfAppWaves
             Name = "myName"; 
             Description = "myDescription";
             Price = 0;
-        }       
+        }
 
+        
+        public async Task DeleteItemData()
+        {
+            Status = "Deleting...";                    
+            
+            Item item = new Item()
+            {
+                id = Id,
+                categoryId = categoryId
+             };
+
+            if (ValidateItem(item))
+            { 
+                string res = await DataService.DeleteItemData(item);
+
+                if (res == "NoContent") 
+                {
+                    Status = $"Deleted, press Load to refresh grid";
+                }
+                else
+                {
+                    Status = $"Error: {res}";
+                }
+            }
+        }
+
+        public async Task AddItemData()
+        {
+            Status = "Adding...";
+
+            Item item = new Item()
+            {
+                id = Guid.NewGuid().ToString(),
+                categoryId = Guid.NewGuid().ToString(),
+                categoryName = CategoryName,
+                sku = Sku,
+                name = Name,
+                description = Description,
+                price = Price
+            };
+
+            if (ValidateItem(item))
+            {
+                Status = await DataService.AddItemData(item);
+                Status += ", press Load to refresh grid";
+            }
+        }
+
+        public async Task UpdateItemData()
+        {
+            Status = "Updating...";
+
+            Item item = new Item()
+            {
+                id = Id,
+                categoryId = CategoryId,
+                categoryName = CategoryName,
+                sku = Sku,
+                name = Name,
+                description = Description,
+                price = Price
+            };
+
+            if (ValidateItem(item))
+            {
+                Status = await DataService.UpdateItemData(item);
+                Status += ", press Load to refresh grid";
+            }
+        }
+
+        public async Task LoadItemData()
+		{
+            Status = $"Loading...";
+
+            ItemList.Clear();
+
+            string query = "SELECT * FROM c ";            
+
+            var itemList = await DataService.LoadItemData(query);
+
+			foreach (Item item in itemList) 
+			{
+                ItemList.Add(item);
+            }
+
+            Status = $"Loaded: {ItemList.Count} items";
+        }
+
+        public async Task FilterItemData()
+        {
+            Status = $"Filtering...";
+
+            ItemList.Clear();
+
+            Item filter = new Item()
+            {
+                id = Id,
+                categoryId = CategoryId,
+                categoryName = CategoryName,
+                sku = Sku,
+                name = Name,
+                description = Description                
+            };
+
+            var itemList = await DataService.FilterItemData(filter);
+
+            foreach (Item item in itemList)
+            {
+                ItemList.Add(item);
+            }
+
+            Status = $"Filtered: {ItemList.Count} items";
+        }
+
+        public void SetSelectedItem(Item item)
+        {
+                Id = item.id;
+                CategoryId = item.categoryId;
+                CategoryName = item.categoryName;
+                Sku = item.sku;
+                Name = item.name;
+                Description = item.description;
+                Price = item.price;
+        }
+
+        public void ClearSelectedItem()
+        {
+            Id = "";
+            CategoryId = "";
+            CategoryName = "";
+            Sku = "";
+            Name = "";
+            Description = "";
+            Price = 0;
+        }
+
+        public bool ValidateItem(Item item)
+        {            
+            Guid guid;
+            bool res = false;
+
+            if (string.IsNullOrEmpty(Id))
+            {
+                Status = "id field is empty";
+            }
+            else if (string.IsNullOrEmpty(CategoryId))
+            {
+                Status = "CategoryId field is empty";
+            }
+            else if (!Guid.TryParse(Id, out guid))
+            {
+                Status = $"Wrong Id guid-format{guid}";
+            }
+            else if (!Guid.TryParse(CategoryId, out guid))
+            {
+                Status = $"Wrong CategoryId guid-format{CategoryId}";
+            }
+            else 
+            { 
+                res = true;
+            }
+            return res;
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+		private void RaisePropertyChanged(string property)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(property));
+			}
+		}
+
+
+        #region Properties
         private string id = "";
         public string Id
         {
@@ -71,22 +250,22 @@ namespace WpfAppWaves
 
 
         private string categoryName = "";
-		public string CategoryName
+        public string CategoryName
         {
-			get
-			{
-				return categoryName;
-			}
+            get
+            {
+                return categoryName;
+            }
 
-			set
-			{
-				if (categoryName != value)
-				{
+            set
+            {
+                if (categoryName != value)
+                {
                     categoryName = value;
-					RaisePropertyChanged("CategoryName");
-				}
-			}
-		}
+                    RaisePropertyChanged("CategoryName");
+                }
+            }
+        }
 
         private string sku = "";
         public string Sku
@@ -147,7 +326,7 @@ namespace WpfAppWaves
         {
             get
             {
-                return price;
+               return price;
             }
 
             set
@@ -177,34 +356,34 @@ namespace WpfAppWaves
             }
         }
 
-
-
         private bool isSave = false;
-		public bool IsSave
-		{
-			get
-			{
-				return isSave;
-			}
+        public bool IsSave
+        {
+            get
+            {
+                return isSave;
+            }
 
-			set
-			{
-				if (isSave != value)
-				{
-					isSave = value;
-					RaisePropertyChanged("isSave");
-				}
-			}
-		}
+            set
+            {
+                if (isSave != value)
+                {
+                    isSave = value;
+                    RaisePropertyChanged("isSave");
+                }
+            }
+        }
+        #endregion
 
-		//Command Add
-		public Command AddCommand
-		{
-			get; set;
-		}
-				
-		private async void OnAdd()
-		{
+        #region Commands
+        //Command Add
+        public Command AddCommand
+        {
+            get; set;
+        }
+
+        private async void OnAdd()
+        {
             await AddItemData();
         }
 
@@ -214,9 +393,9 @@ namespace WpfAppWaves
             get; set;
         }
 
-        private void OnDelete()
+        private async void OnDelete()
         {
-
+            await DeleteItemData();
         }
 
         //Command Filter
@@ -225,9 +404,9 @@ namespace WpfAppWaves
             get; set;
         }
 
-        private void OnFilter()
+        private async void OnFilter()
         {
-
+            await FilterItemData();
         }
 
         //Command Load
@@ -260,83 +439,20 @@ namespace WpfAppWaves
 
         private async void OnGrid()
         {
-            
+
         }
 
-        public async Task AddItemData()
+
+        //Command Clear
+        public Command ClearCommand
         {
-            Status = $"Adding";
-
-            Item item = new Item()
-            {
-                id = Guid.NewGuid().ToString(),
-                categoryId = Guid.NewGuid().ToString(),
-                categoryName = CategoryName,
-                sku = Sku,
-                name = Name,
-                description = Description,
-                price = Price
-            };
-            
-            Status = await DataService.AddItemData(item);
+            get; set;
         }
 
-        public async Task UpdateItemData()
+        private async void OnClear()
         {
-            Status = $"Updating...";
-
-            Item item = new Item()
-            {
-                id = Id,
-                categoryId = CategoryId,
-                categoryName = CategoryName,
-                sku = Sku,
-                name = Name,
-                description = Description,
-                price = Price
-            };
-
-            Status = await DataService.UpdateItemData(item);
+            ClearSelectedItem();
         }
-
-
-        public async Task LoadItemData()
-		{
-            Status = $"Loading...";
-
-            ItemList.Clear();
-
-            string query = "SELECT * FROM c ";            
-
-            var itemList = await DataService.GetItemData(query);
-
-			foreach (Item item in itemList) 
-			{
-                ItemList.Add(item);
-            }
-
-            Status = $"Loaded: {ItemList.Count} items";
-        }
-
-        public void SetSelectedItem(Item item)
-        {
-                Id = item.id;
-                CategoryId = item.categoryId;
-                CategoryName = item.categoryName;
-                Sku = item.sku;
-                Name = item.name;
-                Description = item.description;
-                Price = item.price;
-        }
-				
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		private void RaisePropertyChanged(string property)
-		{
-			if (PropertyChanged != null)
-			{
-				PropertyChanged(this, new PropertyChangedEventArgs(property));
-			}
-		}
-	}
+        #endregion
+    }
 }
