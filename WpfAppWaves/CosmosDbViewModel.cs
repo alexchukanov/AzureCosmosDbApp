@@ -13,9 +13,7 @@ namespace WpfAppWaves
 	{
 		string baseUrl = @"https://query1.finance.yahoo.com/v7/finance";
 		
-		public ObservableCollection<Item> ItemList { get; set; } = new();
-		public ObservableCollection<string> ValidRanges{ get; set; } = new();
-		public ObservableCollection<string> StepIntervals { get; set; } = new();
+		public ObservableCollection<Item> ItemList { get; set; } = new();		
 
 		public CosmosDbViewModel()
 		{	
@@ -24,6 +22,7 @@ namespace WpfAppWaves
             FilterCommand = new Command(OnFilter);
             LoadCommand = new Command(OnLoad);
             UpdateCommand = new Command(OnUpdate);
+            GridCommand = new Command(OnGrid);
 
             Id = Guid.NewGuid().ToString();
             CategoryId = Guid.NewGuid().ToString();
@@ -253,6 +252,17 @@ namespace WpfAppWaves
             await UpdateItemData();
         }
 
+        //Command Grid
+        public Command GridCommand
+        {
+            get; set;
+        }
+
+        private async void OnGrid()
+        {
+            
+        }
+
         public async Task AddItemData()
         {
             Status = $"Adding";
@@ -306,6 +316,17 @@ namespace WpfAppWaves
             }
 
             Status = $"Loaded: {ItemList.Count} items";
+        }
+
+        public void SetSelectedItem(Item item)
+        {
+                Id = item.id;
+                CategoryId = item.categoryId;
+                CategoryName = item.categoryName;
+                Sku = item.sku;
+                Name = item.name;
+                Description = item.description;
+                Price = item.price;
         }
 				
 		public event PropertyChangedEventHandler PropertyChanged;

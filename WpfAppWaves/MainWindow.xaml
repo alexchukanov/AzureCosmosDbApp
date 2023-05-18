@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAppWaves"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="900">
 
@@ -72,6 +73,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="70"/>
             <ColumnDefinition Width="100"/>
@@ -94,63 +96,63 @@
         </Grid.RowDefinitions>
 
 
-        <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Id:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBox  Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="140" Height="30" Text="{Binding Id, Mode=TwoWay}"/>
+        <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Id:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        <TextBox  Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="4" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="250" Height="30" Padding="5" HorizontalAlignment="Left" Text="{Binding Id, Mode=TwoWay}"/>
 
-        <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" FontWeight="Heavy" Content="CategoryId:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBox  Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="140" Height="30" Text="{Binding CategoryId, Mode=TwoWay}"/>
+        <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Cat.Id:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        <TextBox  Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="4" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="250" Height="30" Padding="5" HorizontalAlignment="Left" Text="{Binding CategoryId, Mode=TwoWay}"/>
 
-        <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" FontWeight="Heavy" Content="CategoryName:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBox  Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="140" Height="30" Text="{Binding CategoryName, Mode=TwoWay}"/>
-
-
-        <Label Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Sku:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBox  Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="140" Height="30" Text="{Binding Sku, Mode=TwoWay}"/>
-
-        <Label Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Name:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBox  Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="140" Height="30" Text="{Binding Name, Mode=TwoWay}"/>
-
-        <Label Grid.Column="4" Grid.Row="3" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Description:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBox  Grid.Column="6" Grid.Row="3" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="140" Height="30" Text="{Binding Description, Mode=TwoWay}"/>
-
-        <Label Grid.Column="4" Grid.Row="4" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Price:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBox  Grid.Column="6" Grid.Row="4" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="140" Height="30" Text="{Binding Price, Mode=TwoWay}"/>
+        <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Cat.Name:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        <TextBox  Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="4" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="250" Height="30" Padding="5" HorizontalAlignment="Left" Text="{Binding CategoryName, Mode=TwoWay}"/>
 
 
-        <Button Grid.Column="0" Grid.Row="5"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=LoadCommand}"  Width="80" Height="30">
+        <Label Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Sku:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        <TextBox  Grid.Column="7" Grid.Row="1" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="200" Height="30" Padding="5" Text="{Binding Sku, Mode=TwoWay}"/>
+
+        <Label Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Name:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        <TextBox  Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="200" Height="30" Padding="5" Text="{Binding Name, Mode=TwoWay}"/>
+
+        <Label Grid.Column="6" Grid.Row="3" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Description:" VerticalAlignment="Center" HorizontalAlignment="left"/>
+        <TextBox  Grid.Column="7" Grid.Row="3" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="200" Height="30" Padding="5" Text="{Binding Description, Mode=TwoWay}"/>
+
+        <Label Grid.Column="6" Grid.Row="4" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Price:" VerticalAlignment="Center" HorizontalAlignment="left"/>
+        <TextBox  Grid.Column="7" Grid.Row="4" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="200" Height="30" Padding="5" Text="{Binding Price, Mode=TwoWay}"/>
+
+
+        <Button Grid.Column="1" Grid.Row="5"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=LoadCommand}"  Width="80" Height="30">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" Text="Load"/>
             </StackPanel>
         </Button>
 
-        <Button Grid.Column="8" Grid.Row="1"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=AddCommand}"  Width="80" Height="30">
+        <Button Grid.Column="9" Grid.Row="1"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=AddCommand}"  Width="80" Height="30">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" Text="Add"/>
             </StackPanel>
         </Button>
 
-        <Button Grid.Column="8" Grid.Row="2"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=UpdateCommand}"  Width="80" Height="30">
+        <Button Grid.Column="9" Grid.Row="2"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=UpdateCommand}"  Width="80" Height="30">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" Text="Update"/>
             </StackPanel>
         </Button>
 
-        <Button Grid.Column="8" Grid.Row="3" IsEnabled="False"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=DeleteCommand}"  Width="80" Height="30">
+        <Button Grid.Column="9" Grid.Row="3" IsEnabled="False"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=DeleteCommand}"  Width="80" Height="30">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" Text="Delete"/>
             </StackPanel>
         </Button>
 
-        <Button Grid.Column="8" Grid.Row="4" IsEnabled="False"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=FilterCommand}"   Width="80" Height="30">
+        <Button Grid.Column="9" Grid.Row="4" IsEnabled="False"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=FilterCommand}"   Width="80" Height="30">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" Text="Filter"/>
             </StackPanel>
         </Button>
 
-        <Label Grid.Column="1" Grid.Row="5"  FontWeight="Heavy" Content="Status:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBlock Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="5" Text="{Binding Status}" FontWeight="Medium" Foreground="DarkRed" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Label Grid.Column="2" Grid.Row="5"  FontWeight="Heavy" Content="Status:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <TextBlock Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="5" Text="{Binding Status}" FontWeight="Medium" Foreground="DarkRed" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         
-        <DataGrid Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="9" ItemsSource="{Binding ItemList, Mode=OneWay}"  AutoGenerateColumns="False">
+        <DataGrid Name="itemsGrid" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="9"  SelectionChanged="DataGrid_SelectionChanged" ItemsSource="{Binding ItemList, Mode=OneWay}"  AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="100" Binding="{Binding id}"/>
                 <DataGridTextColumn Header="CategoryId" Width="100" Binding="{Binding categoryId}"/>
@@ -159,7 +161,7 @@
                 <DataGridTextColumn Header="Name" Width="180" Binding="{Binding name}"/>
                 <DataGridTextColumn Header="Description" Width="180" Binding="{Binding description}"/>
                 <DataGridTextColumn Header="Price" Width="80" Binding="{Binding price}"/>
-            </DataGrid.Columns>
+            </DataGrid.Columns>           
         </DataGrid>    
     </Grid>
 </Window>

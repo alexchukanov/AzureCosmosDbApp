@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Xaml.Behaviors;
 
 namespace WpfAppWaves
 {
@@ -27,5 +28,11 @@ namespace WpfAppWaves
 			InitializeComponent();
 			DataContext = vm;
 		}
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Item row = itemsGrid.SelectedItem as Item;
+			vm.SetSelectedItem(row);
+        }
     }
 }
