@@ -112,7 +112,7 @@
         <Label Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Name:" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         <TextBox  Grid.Column="7" Grid.Row="2" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="200" Height="30" Padding="5" Text="{Binding Name, Mode=TwoWay}"/>
 
-        <Label Grid.Column="6" Grid.Row="3" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Description:" VerticalAlignment="Center" HorizontalAlignment="left"/>
+        <Label Grid.Column="6" Grid.Row="3" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Descr:" VerticalAlignment="Center" HorizontalAlignment="left"/>
         <TextBox  Grid.Column="7" Grid.Row="3" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="200" Height="30" Padding="5" Text="{Binding Description, Mode=TwoWay}"/>
 
         <Label Grid.Column="6" Grid.Row="4" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Price:" VerticalAlignment="Center" HorizontalAlignment="left"/>
