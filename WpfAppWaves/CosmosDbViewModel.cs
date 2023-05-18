@@ -32,8 +32,6 @@ namespace WpfAppWaves
             Name = "myName"; 
             Description = "myDescription";
             Price = 0;
-
-            Status = "Hello";
         }       
 
         private string id = "";
@@ -275,7 +273,7 @@ namespace WpfAppWaves
 
         public async Task UpdateItemData()
         {
-            Status = $"Updating";
+            Status = $"Updating...";
 
             Item item = new Item()
             {
@@ -294,7 +292,7 @@ namespace WpfAppWaves
 
         public async Task LoadItemData()
 		{
-            Status = $"Loading";
+            Status = $"Loading...";
 
             ItemList.Clear();
 
