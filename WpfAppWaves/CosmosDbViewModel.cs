@@ -308,7 +308,6 @@ namespace WpfAppWaves
             }
 
             Status = $"Loaded: {ItemList.Count} items";
-
         }
 				
 		public event PropertyChangedEventHandler PropertyChanged;
