@@ -23,6 +23,7 @@ namespace WpfAppWaves
             DeleteCommand = new Command(OnDelete);
             FilterCommand = new Command(OnFilter);
             LoadCommand = new Command(OnLoad);
+            UpdateCommand = new Command(OnUpdate);
 
             Id = Guid.NewGuid().ToString();
             CategoryId = Guid.NewGuid().ToString();
@@ -31,6 +32,8 @@ namespace WpfAppWaves
             Name = "myName"; 
             Description = "myDescription";
             Price = 0;
+
+            Status = "Hello";
         }       
 
         private string id = "";
@@ -241,8 +244,21 @@ namespace WpfAppWaves
             await LoadItemData();
         }
 
+        //Command Update
+        public Command UpdateCommand
+        {
+            get; set;
+        }
+
+        private async void OnUpdate()
+        {
+            await UpdateItemData();
+        }
+
         public async Task AddItemData()
         {
+            Status = $"Adding";
+
             Item item = new Item()
             {
                 id = Guid.NewGuid().ToString(),
@@ -257,9 +273,30 @@ namespace WpfAppWaves
             Status = await DataService.AddItemData(item);
         }
 
+        public async Task UpdateItemData()
+        {
+            Status = $"Updating";
+
+            Item item = new Item()
+            {
+                id = Id,
+                categoryId = CategoryId,
+                categoryName = CategoryName,
+                sku = Sku,
+                name = Name,
+                description = Description,
+                price = Price
+            };
+
+            Status = await DataService.UpdateItemData(item);
+        }
+
+
         public async Task LoadItemData()
 		{
-			ItemList.Clear();
+            Status = $"Loading";
+
+            ItemList.Clear();
 
             string query = "SELECT * FROM c ";            
 
@@ -269,7 +306,10 @@ namespace WpfAppWaves
 			{
                 ItemList.Add(item);
             }
-		}
+
+            Status = $"Loaded: {ItemList.Count} items";
+
+        }
 				
 		public event PropertyChangedEventHandler PropertyChanged;
 

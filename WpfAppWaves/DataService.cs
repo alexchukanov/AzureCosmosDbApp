@@ -46,5 +46,12 @@ namespace WpfAppWaves
 
             return resp.StatusCode.ToString();            
         }
+
+        public static async Task<string> UpdateItemData(Item item)
+        {
+            var resp = await con.UpsertItemAsync(item);
+
+            return resp.StatusCode.ToString();
+        }
     }
 }

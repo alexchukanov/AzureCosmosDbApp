@@ -147,9 +147,9 @@
             </StackPanel>
         </Button>
 
-        <ProgressBar />
-
-
+        <Label Grid.Column="1" Grid.Row="5"  FontWeight="Heavy" Content="Status:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <TextBlock Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="5" Text="{Binding Status}" FontWeight="Medium" Foreground="DarkRed" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        
         <DataGrid Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="9" ItemsSource="{Binding ItemList, Mode=OneWay}"  AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Width="100" Binding="{Binding id}"/>
