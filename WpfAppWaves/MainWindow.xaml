@@ -32,7 +32,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
@@ -71,7 +71,6 @@
         <TextBox  Grid.Column="7" Grid.Row="4" Grid.ColumnSpan="3" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="300" Height="30" Padding="5" Text="{Binding Image, Mode=TwoWay}"/>
 
 
-
         <Button Grid.Column="1" Grid.Row="5" Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=ClearCommand}"   Width="80" Height="30">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" Text="Clear"/>
@@ -102,28 +101,18 @@
             </StackPanel>
         </Button>
 
-
         <Button Grid.Column="1" Grid.Row="6"  Foreground="DarkRed" FontWeight="Heavy" Click="ButtonLoad_Click" Command="{Binding Path=LoadCommand}"  Width="80" Height="30">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" Text="Load"/>
             </StackPanel>
         </Button>
 
-        
-
-        
-
-        
-
         <Button Grid.Column="9" Grid.Row="5" Foreground="DarkRed" FontWeight="Heavy" Click="btShowImage_Click"  Width="80" Height="30">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" Text="Show"/>
             </StackPanel>
         </Button>
-
-
-       
-
+        
         <Label Grid.Column="2" Grid.Row="6"  FontWeight="Heavy" Content="Status:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
         <TextBlock Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="5"  Text="{Binding Status}" FontWeight="Medium" Foreground="DarkRed" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
