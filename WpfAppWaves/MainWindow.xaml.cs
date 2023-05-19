@@ -148,7 +148,7 @@ namespace WpfAppWaves
         {   
             if (string.IsNullOrEmpty(vm.Image))
             {
-                vm.Status = "There is not image!";
+                vm.Status = "There is not an image!";
                 return;
             }
             
