@@ -48,7 +48,8 @@ namespace WpfAppWaves
              };
 
             if (ValidateItem(item))
-            { 
+            {
+                IsActive = true;
                 string res = await DataService.DeleteItemData(item);
 
                 if (res == "NoContent") 
@@ -59,6 +60,7 @@ namespace WpfAppWaves
                 {
                     Status = $"Error: {res}";
                 }
+                IsActive = false;
             }
         }
 
@@ -69,7 +71,7 @@ namespace WpfAppWaves
             Item item = new Item()
             {
                 id = Guid.NewGuid().ToString(),
-                categoryId = Guid.NewGuid().ToString(),
+                categoryId = CategoryId,
                 categoryName = CategoryName,
                 sku = Sku,
                 name = Name,
@@ -80,14 +82,21 @@ namespace WpfAppWaves
 
             if (ValidateItem(item))
             {
+                IsActive = true;
+                Id = "";
+
                 Status = await DataService.AddItemData(item);
+
+                Id = item.id;
+                
                 Status += ", press Load to refresh grid";
+                IsActive = false;
             }
         }
 
         public async Task UpdateItemData()
         {
-            Status = "Updating...";
+            Status = "Updating...";            
 
             Item item = new Item()
             {
@@ -103,14 +112,18 @@ namespace WpfAppWaves
 
             if (ValidateItem(item))
             {
+                IsActive = true;
                 Status = await DataService.UpdateItemData(item);
                 Status += ", press Load to refresh grid";
+                IsActive = false;
             }
+
         }
 
         public async Task LoadItemData()
 		{
             Status = $"Loading...";
+            IsActive = true;
 
             ItemList.Clear();
 
@@ -124,11 +137,14 @@ namespace WpfAppWaves
             }
 
             Status = $"Loaded: {ItemList.Count} items";
+
+            IsActive = false;
         }
 
         public async Task FilterItemData()
         {
             Status = $"Filtering...";
+            IsActive = true;
 
             ItemList.Clear();
 
@@ -150,6 +166,7 @@ namespace WpfAppWaves
             }
 
             Status = $"Filtered: {ItemList.Count} items";
+            IsActive = false;
         }
 
         public void SetSelectedItem(Item item)
@@ -203,18 +220,7 @@ namespace WpfAppWaves
             }
             return res;
         }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-		private void RaisePropertyChanged(string property)
-		{
-			if (PropertyChanged != null)
-			{
-				PropertyChanged(this, new PropertyChangedEventArgs(property));
-			}
-		}
-
+       
 
         #region Properties
 
@@ -380,23 +386,34 @@ namespace WpfAppWaves
             }
         }
 
-        private bool isSave = false;
-        public bool IsSave
+        private bool isActive = false;
+        public bool IsActive
         {
             get
             {
-                return isSave;
+                return isActive;
             }
 
             set
             {
-                if (isSave != value)
+                if (isActive != value)
                 {
-                    isSave = value;
-                    RaisePropertyChanged("isSave");
+                    isActive = value;
+                    RaisePropertyChanged("isActive");
                 }
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
+        }
+
         #endregion
 
         #region Commands

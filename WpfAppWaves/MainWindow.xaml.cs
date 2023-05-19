@@ -52,7 +52,7 @@ namespace WpfAppWaves
         }
 
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {           
             Item row = itemsGrid.SelectedItem as Item;
 		
 			if (row != null) 
@@ -77,7 +77,7 @@ namespace WpfAppWaves
         }
 
         private void DisplayImage16(string fileName)
-        {
+        {           
             // Open a binary reader to read in the pixel data. 
             // We cannot use the usual image loading mechanisms since this is raw 
             // image data.
@@ -118,9 +118,9 @@ namespace WpfAppWaves
                 }
             }
             catch (Exception e)
-            {
+            {               
                 MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            }           
         }
 
         private void img_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -130,7 +130,7 @@ namespace WpfAppWaves
         }
 
         private void btConv_Click(object sender, RoutedEventArgs e)
-        {  
+        {             
             byte[] targetPixels = new byte[2 * bmps.PixelHeight * bmps.PixelWidth];
             bmps.CopyPixels(targetPixels, (bmps.PixelWidth * 16 + 7) / 8, 0);
 
@@ -145,7 +145,7 @@ namespace WpfAppWaves
         }
 
         private void btShowImage_Click(object sender, RoutedEventArgs e)
-        {
+        {           
             int widthFrame = Convert.ToInt32(tbWidth.Text);
             int heightFrame = Convert.ToInt32(tbHeight.Text);
 
@@ -171,6 +171,11 @@ namespace WpfAppWaves
             {
                 img.Source = null;               
             }
+        }
+
+        private void ButtonLoad_Click(object sender, RoutedEventArgs e)
+        {
+            //pbBusy.IsIndeterminate = true;
         }
     }
 }
