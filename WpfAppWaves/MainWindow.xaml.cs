@@ -145,7 +145,13 @@ namespace WpfAppWaves
         }
 
         private void btShowImage_Click(object sender, RoutedEventArgs e)
-        {           
+        {   
+            if (string.IsNullOrEmpty(vm.Image))
+            {
+                vm.Status = "There is not image!";
+                return;
+            }
+            
             int widthFrame = Convert.ToInt32(tbWidth.Text);
             int heightFrame = Convert.ToInt32(tbHeight.Text);
 
