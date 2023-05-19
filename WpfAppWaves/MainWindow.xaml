@@ -6,71 +6,8 @@
         xmlns:local="clr-namespace:WpfAppWaves"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="900">
-
-    <Window.Resources>      
-        <Style x:Key="RoundedButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="FontWeight" Value="Heavy"/>
-            <Setter Property="Foreground" Value="DarkRed"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid x:Name="grid">
-                            <Border x:Name="border" CornerRadius="8" BorderBrush="Black" BorderThickness="2">
-                                <Border.Background>
-                                    <RadialGradientBrush GradientOrigin="0.496,1.052">
-                                        <RadialGradientBrush.RelativeTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform CenterX="0.5" CenterY="0.5"
-                                      ScaleX="1.5" ScaleY="1.5"/>
-                                                <TranslateTransform X="0.02" Y="0.3"/>
-                                            </TransformGroup>
-                                        </RadialGradientBrush.RelativeTransform>
-                                        <GradientStop Offset="1" Color="#00000000"/>
-                                        <GradientStop Offset="0.3" Color="#FFFFFFFF"/>
-                                    </RadialGradientBrush>
-                                </Border.Background>
-                                <ContentPresenter HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                TextElement.FontWeight="Bold">
-                                </ContentPresenter>
-                            </Border>
-
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" TargetName="border">
-                                    <Setter.Value>
-                                        <RadialGradientBrush GradientOrigin="0.496,1.052">
-                                            <RadialGradientBrush.RelativeTransform>
-                                                <TransformGroup>
-                                                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
-                                                    <TranslateTransform X="0.02" Y="0.3"/>
-                                                </TransformGroup>
-                                            </RadialGradientBrush.RelativeTransform>
-                                            <GradientStop Color="#00000000" Offset="1"/>
-                                            <GradientStop Color="#FF303030" Offset="0.3"/>
-                                        </RadialGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FF33962B"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="Opacity" TargetName="grid" Value="0.25"/>
-                            </Trigger>
-
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-
+        Title="MainWindow" Height="800" Width="1600">
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -80,6 +17,14 @@
             <ColumnDefinition Width="70"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="*"/>
@@ -120,6 +65,10 @@
         <Label Grid.Column="6" Grid.Row="4" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Price:" VerticalAlignment="Center" HorizontalAlignment="left"/>
         <TextBox  Grid.Column="7" Grid.Row="4" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="200" Height="30" Padding="5" Text="{Binding Price, Mode=TwoWay}"/>
 
+        <Label Grid.Column="6" Grid.Row="5" Grid.ColumnSpan="2" FontWeight="Heavy" Content="Image:" VerticalAlignment="Center" HorizontalAlignment="left"/>
+        <TextBox  Grid.Column="7" Grid.Row="5" Grid.ColumnSpan="2" Foreground="DarkRed" FontWeight="Heavy" BorderThickness="1" Width="200" Height="30" Padding="5" Text="{Binding Image, Mode=TwoWay}"/>
+
+
 
         <Button Grid.Column="1" Grid.Row="4" Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=ClearCommand}"   Width="80" Height="30">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
@@ -156,7 +105,16 @@
                 <TextBlock HorizontalAlignment="Center" Text="Filter"/>
             </StackPanel>
         </Button>
-        
+
+        <Button Grid.Column="9" Grid.Row="5" Foreground="DarkRed" FontWeight="Heavy" Click="btShowImage_Click"  Width="80" Height="30">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center" Text="Show"/>
+            </StackPanel>
+        </Button>
+
+
+       
+
         <Label Grid.Column="2" Grid.Row="5"  FontWeight="Heavy" Content="Status:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
         <TextBlock Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="5" Text="{Binding Status}" FontWeight="Medium" Foreground="DarkRed" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         
@@ -169,7 +127,48 @@
                 <DataGridTextColumn Header="Name" Width="180" Binding="{Binding name}"/>
                 <DataGridTextColumn Header="Description" Width="180" Binding="{Binding description}"/>
                 <DataGridTextColumn Header="Price" Width="80" Binding="{Binding price}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Image" Width="80" Binding="{Binding image}" IsReadOnly="True"/>
             </DataGrid.Columns>           
-        </DataGrid>    
+        </DataGrid>
+
+        <Button Grid.Column="15" Grid.Row="1" Foreground="DarkRed" FontWeight="Heavy" Click="btOpen16_Click"  Width="80" Height="30">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center" Text="Open" />
+            </StackPanel>
+        </Button>
+
+        <Button Grid.Column="16" Grid.Row="1" Name="btConv" IsEnabled="False" Foreground="DarkRed" FontWeight="Heavy" Click="btConv_Click"  Width="80" Height="30">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center" Text="Conv" />
+            </StackPanel>
+        </Button>
+
+        <Button Grid.Column="16" Grid.Row="2" Name="btClearImage" Foreground="DarkRed" FontWeight="Heavy" Click="btClearImage_Click"  Width="80" Height="30">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center" Text="Clear" />
+            </StackPanel>
+        </Button>
+        
+        <TextBlock Grid.Column="11" Grid.Row="1" Text="File name:" Height="30" FontSize="16" FontWeight="DemiBold" Margin="10"/>
+        <TextBox Grid.Column="12" Grid.ColumnSpan="3" Grid.Row="1" x:Name="tbFileName" Height="30" FontSize="14" FontWeight="DemiBold" Margin="10 10 0 10" Padding="3"/>
+
+        <TextBlock Grid.Column="11" Grid.Row="2" Text="Image(pixels):"  Height="30" FontSize="16" FontWeight="DemiBold" Margin="10"/>
+
+        <TextBlock Grid.Column="12" Grid.Row="2" Text="Width"  Height="30" FontSize="16" FontWeight="DemiBold" Margin="10" HorizontalAlignment="Right"/>
+        <TextBox Name="tbWidth" Grid.Column="13"  Grid.Row="2" Height="30" FontSize="14" FontWeight="DemiBold" Margin="10" Padding="3"/>
+
+        <TextBlock Grid.Column="14" Grid.Row="2" Text="Height:"  Height="30" FontSize="16" FontWeight="DemiBold" Margin="10" HorizontalAlignment="Right"/>
+        <TextBox Name="tbHeight" Grid.Column="15"  Grid.Row="2"  Height="30" FontSize="14" FontWeight="DemiBold" Margin="10" Padding="3"/>
+
+        <ScrollViewer Grid.Column="11" Grid.ColumnSpan="8" Grid.Row="3" Grid.RowSpan="6" Name="scrollViewer" BorderThickness="3" BorderBrush="Black"
+                      HorizontalScrollBarVisibility="Auto" 
+                      VerticalScrollBarVisibility="Auto" Width="670" Height="600">
+            <Canvas Name="canvas" Height="580 " Width="650">
+                <Image x:Name="img" Width="650" Height="580"    HorizontalAlignment="Left"    
+                       VerticalAlignment="Top"   Stretch="None"  SizeChanged="img_SizeChanged"  >
+                </Image>
+            </Canvas>
+        </ScrollViewer>
+
     </Grid>
 </Window>

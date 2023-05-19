@@ -25,6 +25,7 @@ namespace WpfAppWaves
             UpdateCommand = new Command(OnUpdate);
             GridCommand = new Command(OnGrid);
             ClearCommand = new Command(OnClear);
+            LoadImageCommand = new Command(OnLoadImage);
 
             Id = Guid.NewGuid().ToString();
             CategoryId = Guid.NewGuid().ToString();
@@ -73,7 +74,8 @@ namespace WpfAppWaves
                 sku = Sku,
                 name = Name,
                 description = Description,
-                price = Price
+                price = Price,
+                image = Image
             };
 
             if (ValidateItem(item))
@@ -95,7 +97,8 @@ namespace WpfAppWaves
                 sku = Sku,
                 name = Name,
                 description = Description,
-                price = Price
+                price = Price,
+                image = Image
             };
 
             if (ValidateItem(item))
@@ -158,6 +161,7 @@ namespace WpfAppWaves
                 Name = item.name;
                 Description = item.description;
                 Price = item.price;
+                Image = item.image;
         }
 
         public void ClearSelectedItem()
@@ -169,6 +173,7 @@ namespace WpfAppWaves
             Name = "";
             Description = "";
             Price = 0;
+            Image = "";
         }
 
         public bool ValidateItem(Item item)
@@ -212,6 +217,25 @@ namespace WpfAppWaves
 
 
         #region Properties
+
+        private string image = "";
+        public string Image
+        {
+            get
+            {
+                return image;
+            }
+
+            set
+            {
+                if (image != value)
+                {
+                    image = value;
+                    RaisePropertyChanged("Image");
+                }
+            }
+        }
+
         private string id = "";
         public string Id
         {
@@ -452,6 +476,17 @@ namespace WpfAppWaves
         private async void OnClear()
         {
             ClearSelectedItem();
+        }
+
+        //Command LoadImage
+        public Command LoadImageCommand
+        {
+            get; set;
+        }
+
+        private async void OnLoadImage()
+        {
+            //LoadImage();
         }
         #endregion
     }
