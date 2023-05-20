@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAppWaves"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1650">
@@ -101,7 +102,7 @@
             </StackPanel>
         </Button>
 
-        <Button Grid.Column="1" Grid.Row="6"  Foreground="DarkRed" FontWeight="Heavy" Click="ButtonLoad_Click" Command="{Binding Path=LoadCommand}"  Width="80" Height="30">
+        <Button Grid.Column="1" Grid.Row="6"  Foreground="DarkRed" FontWeight="Heavy" Command="{Binding Path=LoadCommand}"  Width="80" Height="30">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" Text="Load"/>
             </StackPanel>
@@ -112,10 +113,20 @@
                 <TextBlock HorizontalAlignment="Center" Text="Show"/>
             </StackPanel>
         </Button>
-        
-        <Label Grid.Column="2" Grid.Row="6"  FontWeight="Heavy" Content="Status:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBlock Grid.Column="3" Grid.Row="6" Grid.ColumnSpan="5"  Text="{Binding Status}" FontWeight="Medium" Foreground="DarkRed" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
+        <TextBlock Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="5"  Text="{Binding Status}" FontWeight="Medium" Foreground="DarkRed" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+        <TextBlock Grid.Column="3" Grid.Row="6" Width="80" Visibility="{Binding IsMore}" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Hyperlink Foreground="DarkRed" FontStyle="Italic" FontWeight="Bold" Click="HyperlinkMore_Click">More</Hyperlink>
+        </TextBlock>
+
+        <TextBlock Grid.Column="7" Grid.Row="6" Width="80" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Hyperlink Foreground="DarkRed" FontStyle="Italic" FontWeight="Bold" Click="HyperlinkReset_Click">Reset</Hyperlink>
+        </TextBlock>
+        
+        <Label Grid.Column="8" Grid.Row="6" FontWeight="Heavy" Content="Page size:" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <wpfx:IntegerUpDown Grid.Column="9" Grid.Row="6" Foreground="DarkRed" FontWeight="Heavy" Height="30" Value="{Binding MaxItemCount, Mode=TwoWay}"  Increment="50" Margin="10" />
+        
         <ProgressBar Name ="pbBusy" Grid.Column="1" Grid.Row="7"  Grid.ColumnSpan="9" Height="5" Padding="2" Margin="10 0 10 5" IsIndeterminate="{Binding IsActive, Mode=OneWay}" VerticalAlignment="Center"/>
         
         <DataGrid Name="itemsGrid" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="9"  SelectionChanged="DataGrid_SelectionChanged" ItemsSource="{Binding ItemList, Mode=OneWay}"  AutoGenerateColumns="False">

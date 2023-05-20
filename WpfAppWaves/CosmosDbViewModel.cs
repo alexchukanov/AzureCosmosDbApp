@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WpfAppWaves
 {
@@ -14,9 +16,10 @@ namespace WpfAppWaves
 	{
 		string baseUrl = @"https://query1.finance.yahoo.com/v7/finance";
 		
-		public ObservableCollection<Item> ItemList { get; set; } = new();		
+		public ObservableCollection<Item> ItemList { get; set; } = new();
 
-		public CosmosDbViewModel()
+        
+        public CosmosDbViewModel()
 		{	
 			AddCommand = new Command(OnAdd);
             DeleteCommand = new Command(OnDelete);
@@ -25,8 +28,7 @@ namespace WpfAppWaves
             UpdateCommand = new Command(OnUpdate);
             GridCommand = new Command(OnGrid);
             ClearCommand = new Command(OnClear);
-            LoadImageCommand = new Command(OnLoadImage);
-
+           
             Id = Guid.NewGuid().ToString();
             CategoryId = Guid.NewGuid().ToString();
             CategoryName = "myCategoryName";
@@ -39,6 +41,7 @@ namespace WpfAppWaves
         
         public async Task DeleteItemData()
         {
+            IsMore = Visibility.Hidden;
             Status = "Deleting...";                    
             
             Item item = new Item()
@@ -66,6 +69,7 @@ namespace WpfAppWaves
 
         public async Task AddItemData()
         {
+            IsMore = Visibility.Hidden;
             Status = "Adding...";
 
             Item item = new Item()
@@ -96,6 +100,7 @@ namespace WpfAppWaves
 
         public async Task UpdateItemData()
         {
+            IsMore = Visibility.Hidden;
             Status = "Updating...";            
 
             Item item = new Item()
@@ -124,20 +129,46 @@ namespace WpfAppWaves
 		{
             Status = $"Loading...";
             IsActive = true;
-
+            
             ItemList.Clear();
 
             string query = "SELECT * FROM c ";            
 
-            var itemList = await DataService.LoadItemData(query);
+            var itemList = await DataService.LoadItemData(query, MaxItemCount);
 
-			foreach (Item item in itemList) 
-			{
+            int count = itemList.Count();
+
+            IsMore = (count < MaxItemCount) ? Visibility.Hidden : Visibility.Visible;
+
+            foreach (Item item in itemList)
+            {
                 ItemList.Add(item);
             }
 
             Status = $"Loaded: {ItemList.Count} items";
+            IsActive = false;
+        }
 
+        public async Task LoadMoreItemData()
+        {
+            Status = $"More loading...";
+            IsActive = true;
+            IsMore = Visibility.Hidden;
+
+            string query = "SELECT * FROM c ";
+
+            var itemList = await DataService.LoadMoreItemData(query, MaxItemCount);
+
+            int count = itemList.Count();
+
+            IsMore = (count < MaxItemCount ) ? Visibility.Hidden : Visibility.Visible;
+
+            foreach (Item item in itemList)
+            {
+                ItemList.Add(item);
+            }
+
+            Status = $"Loaded: {ItemList.Count} items";
             IsActive = false;
         }
 
@@ -169,7 +200,14 @@ namespace WpfAppWaves
             IsActive = false;
         }
 
-        public void SetSelectedItem(Item item)
+        public void ResetItemData()
+        {
+            Status = "";
+            IsMore = Visibility.Hidden;
+            ItemList.Clear();
+        }
+
+            public void SetSelectedItem(Item item)
         {
                 Id = item.id;
                 CategoryId = item.categoryId;
@@ -404,6 +442,40 @@ namespace WpfAppWaves
             }
         }
 
+        private int maxItemCount = 100;
+        public int MaxItemCount
+        {
+            get
+            {
+                return maxItemCount;
+            }
+            set
+            {
+                if (maxItemCount != value)
+                {
+                    maxItemCount = value;
+                    RaisePropertyChanged("MaxItemCount");
+                }
+            }
+        }
+
+        private Visibility isMore = Visibility.Hidden;
+        public Visibility IsMore
+        {
+            get
+            {
+                return isMore;
+            }
+            set
+            {
+                if (isMore != value)
+                {
+                    isMore = value;
+                    RaisePropertyChanged("IsMore");
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(string property)
@@ -482,8 +554,7 @@ namespace WpfAppWaves
         {
 
         }
-
-
+        
         //Command Clear
         public Command ClearCommand
         {
@@ -493,18 +564,7 @@ namespace WpfAppWaves
         private async void OnClear()
         {
             ClearSelectedItem();
-        }
-
-        //Command LoadImage
-        public Command LoadImageCommand
-        {
-            get; set;
-        }
-
-        private async void OnLoadImage()
-        {
-            //LoadImage();
-        }
+        }        
         #endregion
     }
 }

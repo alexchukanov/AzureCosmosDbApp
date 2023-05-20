@@ -178,10 +178,15 @@ namespace WpfAppWaves
                 img.Source = null;               
             }
         }
-
-        private void ButtonLoad_Click(object sender, RoutedEventArgs e)
+       
+        private async void HyperlinkMore_Click(object sender, RoutedEventArgs e)
         {
-            //pbBusy.IsIndeterminate = true;
+            await vm.LoadMoreItemData();
+        }
+
+        private void HyperlinkReset_Click(object sender, RoutedEventArgs e)
+        {
+            vm.ResetItemData();
         }
     }
 }
