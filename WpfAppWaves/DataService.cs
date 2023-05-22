@@ -67,24 +67,32 @@ namespace WpfAppWaves
         }
                 
         public static async Task<List<Item>> LoadItemData(string query, int maxItemCount)
-        {
+        {            
             continuation = null;
 
             List<Item> list = new();
 
             var queryDef = new QueryDefinition(query);
 
-            using FeedIterator<Item> iter = con.GetItemQueryIterator<Item>(queryDefinition: queryDef, 
-                                              requestOptions: new QueryRequestOptions { MaxItemCount = maxItemCount});
-
-            var response = await iter.ReadNextAsync();
-                        
-            list.AddRange(response);
-
-            // Get continuation token once we've gotten > 0 results. 
-            if (response.Count > 0)
+            if (maxItemCount == 0)
             {
-                continuation = response.ContinuationToken;                
+                using FeedIterator<Item> iter = con.GetItemQueryIterator<Item>(queryDefinition: queryDef);
+                var response = await iter.ReadNextAsync();
+                list.AddRange(response);
+            }
+            else
+            {
+                using FeedIterator<Item> iter = con.GetItemQueryIterator<Item>(queryDefinition: queryDef,
+                                                  requestOptions: new QueryRequestOptions { MaxItemCount = maxItemCount });
+
+                var response = await iter.ReadNextAsync();
+                list.AddRange(response);
+
+                // Get continuation token once we've gotten > 0 results. 
+                if (response.Count > 0)
+                {
+                    continuation = response.ContinuationToken;
+                }
             }
 
             return list;
@@ -135,8 +143,9 @@ namespace WpfAppWaves
         {
             string res = "";
 
-            Microsoft.Azure.Cosmos.PartitionKey partitionKey = new Microsoft.Azure.Cosmos.PartitionKey(item.categoryId);
-            try 
+            Microsoft.Azure.Cosmos.PartitionKey partitionKey = new Microsoft.Azure.Cosmos.PartitionKey("item.categoryId");
+
+            try
             {
                 var response = await con.DeleteItemAsync<Item>(item.id, partitionKey);
                 res = response.StatusCode.ToString();
