@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -17,7 +18,6 @@ namespace WpfAppWaves
 		string baseUrl = @"https://query1.finance.yahoo.com/v7/finance";
 		
 		public ObservableCollection<Item> ItemList { get; set; } = new();
-
         
         public CosmosDbViewModel()
 		{	
@@ -30,12 +30,13 @@ namespace WpfAppWaves
             ClearCommand = new Command(OnClear);
            
             Id = Guid.NewGuid().ToString();
-            CategoryId = Guid.NewGuid().ToString();
+            CategoryId = "3E4CEACD-D007-46EB-82D7-31F6141752B2";//Guid.NewGuid().ToString();
             CategoryName = "myCategoryName";
             Sku = "mySku";
             Name = "myName"; 
             Description = "myDescription";
             Price = 0;
+            CountTotal = 0;
         }
 
         
@@ -132,20 +133,28 @@ namespace WpfAppWaves
             
             ItemList.Clear();
 
-            string query = "SELECT * FROM c ";            
+            //total num records
+            string queryCount = "SELECT VALUE COUNT(1) FROM c";
+            CountTotal = await DataService.CountItemData(queryCount);
 
-            var itemList = await DataService.LoadItemData(query, MaxItemCount);
-
-            int count = itemList.Count();
-
-            IsMore = (count < MaxItemCount) ? Visibility.Hidden : Visibility.Visible;
-
-            foreach (Item item in itemList)
+            if (CountTotal != 0)
             {
-                ItemList.Add(item);
+                string query = "SELECT * FROM c ";
+
+                var itemList = await DataService.LoadItemData(query, MaxItemCount);
+
+                int count = itemList.Count();
+
+                IsMore = (count < MaxItemCount) ? Visibility.Hidden : Visibility.Visible;
+
+                foreach (Item item in itemList)
+                {
+                    ItemList.Add(item);
+                }
             }
 
-            Status = $"Loaded: {ItemList.Count} items";
+            Status = $"Loaded: {ItemList.Count} items out of {CountTotal}";
+
             IsActive = false;
         }
 
@@ -161,14 +170,14 @@ namespace WpfAppWaves
 
             int count = itemList.Count();
 
-            IsMore = (count < MaxItemCount ) ? Visibility.Hidden : Visibility.Visible;
+            IsMore = (count < MaxItemCount) ? Visibility.Hidden : Visibility.Visible;
 
             foreach (Item item in itemList)
             {
                 ItemList.Add(item);
             }
 
-            Status = $"Loaded: {ItemList.Count} items";
+            Status = $"Loaded: {ItemList.Count} items out of {CountTotal}";
             IsActive = false;
         }
 
@@ -200,6 +209,8 @@ namespace WpfAppWaves
             IsActive = false;
         }
 
+
+
         public void ResetItemData()
         {
             Status = "";
@@ -207,7 +218,7 @@ namespace WpfAppWaves
             ItemList.Clear();
         }
 
-            public void SetSelectedItem(Item item)
+        public void SetSelectedItem(Item item)
         {
                 Id = item.id;
                 CategoryId = item.categoryId;
@@ -219,7 +230,7 @@ namespace WpfAppWaves
                 Image = item.image;
         }
 
-        public void ClearSelectedItem()
+        public async void ClearSelectedItem()
         {
             Id = "";
             CategoryId = "";
@@ -459,6 +470,12 @@ namespace WpfAppWaves
             }
         }
 
+        public int CountTotal
+        {
+            get;           
+            set;            
+        }
+        
         private Visibility isMore = Visibility.Hidden;
         public Visibility IsMore
         {

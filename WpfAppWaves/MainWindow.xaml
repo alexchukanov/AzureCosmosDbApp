@@ -116,7 +116,7 @@
 
         <TextBlock Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="5"  Text="{Binding Status}" FontWeight="Medium" Foreground="DarkRed" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Column="3" Grid.Row="6" Width="80" Visibility="{Binding IsMore}" HorizontalAlignment="Right" VerticalAlignment="Center">
+        <TextBlock Grid.Column="4" Grid.Row="6" Width="80" Visibility="{Binding IsMore}" HorizontalAlignment="Right" VerticalAlignment="Center">
             <Hyperlink Foreground="DarkRed" FontStyle="Italic" FontWeight="Bold" Click="HyperlinkMore_Click">More</Hyperlink>
         </TextBlock>
 

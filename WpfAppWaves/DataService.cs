@@ -6,6 +6,7 @@ using Microsoft.Azure.Cosmos.Serialization.HybridRow.Schemas;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -13,7 +14,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Documents;
-
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using static System.Net.WebRequestMethods;
+using PartitionKey = Microsoft.Azure.Cosmos.PartitionKey;
 
 namespace WpfAppWaves
 {
@@ -21,8 +24,7 @@ namespace WpfAppWaves
 	{
         static CosmosClient client;
         static Database db;
-        static Microsoft.Azure.Cosmos.Container con;
-        //static int maxItemCount = 0;
+        static Microsoft.Azure.Cosmos.Container con;       
         static string continuation = null;
 
         static DataService()
@@ -145,6 +147,24 @@ namespace WpfAppWaves
             }
 
             return res;                    
+        }
+
+        public static async Task<int> CountItemData(string query)
+        {
+            int count = 0; 
+
+            using FeedIterator<int> iter = con.GetItemQueryIterator<int>(
+                       queryText: query
+                       );
+
+            var resp = await iter.ReadNextAsync();
+
+            if (resp.StatusCode.ToString() == "OK" && resp.Count > 0)
+            {
+                count = resp.Resource.ToArray<int>()[0];
+            }
+
+            return count;
         }
     }
 }
