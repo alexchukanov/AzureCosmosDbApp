@@ -18,6 +18,8 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using static System.Net.WebRequestMethods;
 using PartitionKey = Microsoft.Azure.Cosmos.PartitionKey;
 
+/// AzureCosmosDbApp
+// This isa a PoC research for DIERS International GmbH which shows how to use AzureCosmos NoSQL DB cloud storage to keep images.
 namespace WpfAppWaves
 {
 	public class DataService
