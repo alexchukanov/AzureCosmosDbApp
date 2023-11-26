@@ -33,7 +33,7 @@ namespace WpfAppWaves
         {
             client = new CosmosClient(
                accountEndpoint: "https://8acb9bae-0ee0-4-231-b9ee.documents.azure.com:443/",
-               authKeyOrResourceToken: "pzHs0F4QZJxEtapuzenQi2Fneq660Y27fmkLt3NANo26e89YHNVrIls59ibl7BxeJ1zGqankugbZACDbfD8wpg=="
+               authKeyOrResourceToken: "your-key"
                );
 
             db = client.GetDatabase("SampleDB");
